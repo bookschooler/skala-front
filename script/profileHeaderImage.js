@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function syncImageSize() {
+        if (window.innerWidth <= 786) {
+            image.style.width = "76px";
+            image.style.height = "76px";
+            header.style.minHeight = "128px";
+            metaBlock.style.transform = "none";
+            return;
+        }
+
         var size = (title.getBoundingClientRect().height + meta.getBoundingClientRect().height) * 1.5;
         image.style.width = size.toFixed(2) + "px";
         image.style.height = size.toFixed(2) + "px";

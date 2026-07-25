@@ -1,7 +1,7 @@
 import { getKoreanAddress, getRealtimeWeather } from "./weatherAPI.js";
 
 var cities = [
-    { name: "광주광역시 광산구 KR", country: "대한민국", latitude: 35.1595, longitude: 126.8526 },
+    { name: "광주 KR", country: "대한민국", latitude: 35.1595, longitude: 126.8526 },
     { name: "서울 KR", country: "대한민국", latitude: 37.5665, longitude: 126.9780 },
     { name: "부산 KR", country: "대한민국", latitude: 35.1796, longitude: 129.0756 },
     { name: "제주 KR", country: "대한민국", latitude: 33.4996, longitude: 126.5312 },
@@ -60,6 +60,7 @@ var hasAutoSelectedCurrentLocation = false;
 var weatherMap;
 var markersByCity = {};
 var currentLocationMarker = null;
+var currentLocationWatchStarted = false;
 
 function findCity(cityName) {
     return cities.find(function (city) {
@@ -374,6 +375,12 @@ function handleLocationError(error) {
 }
 
 function startCurrentLocationTracking() {
+    if (currentLocationWatchStarted) {
+        return;
+    }
+
+    currentLocationWatchStarted = true;
+
     if (!("geolocation" in navigator)) {
         setCurrentLocationStatus(
             "이 브라우저에서는 현재 위치 조회를 지원하지 않습니다.",
@@ -394,6 +401,27 @@ function startCurrentLocationTracking() {
     });
 }
 
+function startCurrentLocationTrackingAfterIntro() {
+    if (!document.body.classList.contains("intro-is-open") || window.soyoungIntroClosed) {
+        startCurrentLocationTracking();
+        return;
+    }
+
+    setCurrentLocationStatus(
+        "홈페이지가 열리면 현재 위치 권한을 요청합니다.",
+        "인트로를 넘긴 뒤 브라우저 위치 권한을 허용해 주세요."
+    );
+
+    window.addEventListener("soyoung:intro-closed", startCurrentLocationTracking, { once: true });
+
+    var introCheckTimer = window.setInterval(function () {
+        if (!document.body.classList.contains("intro-is-open") || window.soyoungIntroClosed) {
+            window.clearInterval(introCheckTimer);
+            startCurrentLocationTracking();
+        }
+    }, 100);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     var citySelect = document.getElementById("city-select");
 
@@ -409,5 +437,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateWeather();
-    startCurrentLocationTracking();
+    startCurrentLocationTrackingAfterIntro();
 });

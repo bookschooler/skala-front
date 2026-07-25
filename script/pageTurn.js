@@ -32,6 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
         button.style.transform = "translateY(-50%)";
     }
 
+    function dispatchIntroClosed() {
+        window.soyoungIntroClosed = true;
+        window.dispatchEvent(new CustomEvent("soyoung:intro-closed"));
+    }
+
     if (!intro || !button || !bookElement) {
         document.body.classList.remove("intro-is-open");
         return;
@@ -88,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         intro.classList.add("intro-hidden");
         intro.setAttribute("aria-hidden", "true");
         document.body.classList.remove("intro-is-open");
+        dispatchIntroClosed();
         return;
     }
 
@@ -145,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.setTimeout(function () {
             intro.classList.add("intro-hidden");
             document.body.classList.remove("intro-is-open");
+            dispatchIntroClosed();
         }, 300);
     }
 

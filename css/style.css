@@ -991,6 +991,28 @@ body.holiday-page .holiday-schedule {
     margin: 0 0 20px;
 }
 
+body.holiday-page .holiday-content-frame {
+    margin-top: 18px;
+    padding: 22px;
+    border: 1px solid var(--rule);
+    background:
+        linear-gradient(135deg, rgba(255, 250, 240, 0.9), rgba(240, 232, 216, 0.72)),
+        repeating-linear-gradient(0deg, rgba(17, 17, 17, 0.035), rgba(17, 17, 17, 0.035) 1px, transparent 1px, transparent 10px);
+}
+
+body.holiday-page .holiday-content-frame h2:first-child {
+    margin-top: 0;
+}
+
+body.holiday-page .holiday-updated {
+    margin: 4px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
 body.holiday-page .holiday-entry {
     display: grid;
     grid-template-columns: 4.5rem minmax(0, 1fr);
@@ -1756,6 +1778,159 @@ body.profile-page h2::before {
     display: none;
 }
 
+body.profile-page .container > dl:first-of-type dd {
+    font-family: "Noto Sans KR", "Malgun Gothic", Arial, sans-serif;
+}
+
+body.profile-page .profile-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 18px;
+    margin-top: -32px;
+}
+
+body.profile-page .profile-section {
+    position: relative;
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--rule);
+    background:
+        linear-gradient(135deg, rgba(255, 250, 240, 0.9), rgba(240, 232, 216, 0.72)),
+        repeating-linear-gradient(0deg, rgba(17, 17, 17, 0.035), rgba(17, 17, 17, 0.035) 1px, transparent 1px, transparent 10px);
+}
+
+body.profile-page .profile-section::after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    pointer-events: none;
+}
+
+body.profile-page .profile-about-section,
+body.profile-page .profile-traits-section {
+    grid-column: 1 / -1;
+}
+
+body.profile-page .profile-kicker {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-family: "Cormorant Garamond", "Noto Serif KR", serif;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+body.profile-page .profile-section h2 {
+    margin-top: 0;
+    font-size: clamp(1.32rem, 2vw, 1.82rem);
+}
+
+body.profile-page .profile-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.profile-page .profile-chip-list li {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 7px 12px;
+    border: 1px solid rgba(33, 31, 27, 0.72);
+    background: rgba(255, 250, 240, 0.76);
+    color: var(--ink);
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+body.profile-page .profile-goal-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: profile-goal;
+}
+
+body.profile-page .profile-goal-list li {
+    counter-increment: profile-goal;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+    font-weight: 700;
+}
+
+body.profile-page .profile-goal-list li:last-child {
+    border-bottom: 0;
+}
+
+body.profile-page .profile-goal-list li::before {
+    content: counter(profile-goal, decimal-leading-zero);
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--rule);
+    color: var(--rule);
+    font-family: "Cormorant Garamond", "Noto Serif KR", serif;
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+body.profile-page .profile-about-copy {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 18px;
+    border-left: 4px solid var(--rule);
+    background: rgba(255, 250, 240, 0.62);
+}
+
+body.profile-page .profile-about-copy p {
+    margin: 0;
+    color: #2d2924;
+    font-weight: 400;
+    line-height: 1.82;
+    word-break: keep-all;
+}
+
+body.profile-page .profile-trait-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0;
+}
+
+body.profile-page .profile-trait {
+    min-width: 0;
+    padding: 14px;
+    border-top: 3px solid var(--rule);
+    background: rgba(255, 250, 240, 0.56);
+}
+
+body.profile-page .profile-trait dt {
+    padding-top: 0;
+    font-size: 1.04rem;
+    line-height: 1.32;
+}
+
+body.profile-page .profile-trait dd {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+    line-height: 1.62;
+    word-break: keep-all;
+}
+
 @keyframes pageTurn {
     0% {
         opacity: 1;
@@ -2013,14 +2188,16 @@ body.profile-page h2::before {
     }
 
     body.profile-page .profile-page-title {
-        min-height: 96px;
-        padding: 20px 0 8px;
+        min-height: 128px;
+        padding: 88px 0 8px;
     }
 
     body.profile-page .profile-page-title img {
-        left: 4%;
-        width: 84px;
-        height: 84px;
+        top: 8px;
+        left: 50%;
+        width: 76px;
+        height: 76px;
+        transform: translateX(-50%);
     }
 
     body.newspaper-subpage .subpage-masthead-meta {
@@ -2038,6 +2215,25 @@ body.profile-page h2::before {
 
     body.newspaper-subpage h2 {
         font-size: 1.42rem;
+    }
+
+    body.profile-page .profile-content-grid,
+    body.profile-page .profile-trait-list {
+        grid-template-columns: 1fr;
+    }
+
+    body.profile-page .profile-content-grid {
+        gap: 14px;
+        margin-top: 14px;
+    }
+
+    body.profile-page .profile-section {
+        padding: 16px;
+    }
+
+    body.profile-page .profile-about-section,
+    body.profile-page .profile-traits-section {
+        grid-column: auto;
     }
 
     body.newspaper-subpage .trip-grid {
@@ -2123,6 +2319,33 @@ body.profile-page h2::before {
 }
 
 @media (max-width: 520px) {
+    body.holiday-page .container {
+        width: calc(100% - 32px);
+        margin: 9px 16px;
+    }
+
+    body.holiday-page .holiday-content-frame {
+        padding: 16px;
+    }
+
+    body.profile-page .container {
+        width: calc(100% - 32px);
+        margin: 9px 16px;
+    }
+
+    body.profile-page .profile-page-title {
+        min-height: 128px;
+        padding: 88px 0 8px;
+    }
+
+    body.profile-page .profile-page-title img {
+        top: 8px;
+        left: 50%;
+        width: 76px;
+        height: 76px;
+        transform: translateX(-50%);
+    }
+
     body.newspaper-subpage h1 {
         font-size: 1.48rem;
         line-height: 1.18;
