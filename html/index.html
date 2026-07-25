@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUN SOYOUNG</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="../css/style.css?v=107">
+    <link rel="stylesheet" href="../css/style.css?v=121">
 </head>
 <body class="intro-is-open">
     <div class="page-turn-intro" aria-label="인트로 신문">
@@ -36,6 +36,8 @@
                     </div>
                 </div>
             </div>
+            <div class="intro-page intro-paper intro-paper-inner" aria-hidden="true"></div>
+            <div class="intro-page intro-paper intro-paper-inner" aria-hidden="true"></div>
             <div class="intro-page intro-paper intro-paper-back" data-density="hard" aria-hidden="true">
             </div>
         </div>
@@ -47,13 +49,13 @@
     <div class="newspaper">
         <div class="masthead-meta masthead-meta-top">
             <span>SKALA FRONT-END CLASS</span>
+            <span class="home-current-date">2026.07.25</span>
         </div>
 
         <header class="masthead">
             <h1><span>YUN SOYOUNG</span></h1>
             <div class="masthead-bottom-meta">
                 <p>SOYOUNG'S PERSONAL WEB PAGE FOR FRONT-END CLASS</p>
-                <span class="home-current-date">2026.07.25</span>
             </div>
         </header>
 
@@ -73,8 +75,7 @@
                 <p><strong>[업데이트]</strong> 드디어 프론트 엔드 과제 완성! 여행 앨범에 동영상 추가 완료.</p>
                 <p>아쿠아플라넷에서의 수족관멍 영상을 추가했습니다. 
                 <br>제가 한 시간이나 수족관멍을 하게 한 영상입니다.</p>
-                <p class="byline">26.07.25</p>
-
+                <br>    
                 <h3>Best Cut of the Month</h3>
                 <video src="../media/수족관멍.mp4" controls></video>
                 <br><p>아쿠아플라넷에서 수족관멍. 2026년 촬영.</p>
@@ -110,18 +111,6 @@
                     <button type="button" onclick="showMyBag()">My Bag</button>
                 </section>
 
-                <section class="paper-section challenge-card">
-                    <p class="kicker">CSS Learning Links</p>
-                    <h2>CSS Code Challenge</h2>
-                    <ol class="challenge-list">
-                        <li><a href="https://www.w3schools.com/css/css_challenges_colors.asp" target="_blank">CSS Colors</a></li>
-                        <li><a href="https://www.w3schools.com/css/css_challenges_font.asp" target="_blank">CSS Fonts</a></li>
-                        <li><a href="https://www.w3schools.com/css/css_challenges_text.asp" target="_blank">CSS Text</a></li>
-                        <li><a href="https://www.w3schools.com/css/css_challenges_background.asp" target="_blank">CSS Backgrounds</a></li>
-                        <li><a href="https://www.w3schools.com/css/css_challenges_position.asp" target="_blank">CSS Position</a></li>
-                        <li><a href="https://www.w3schools.com/css/css_challenges_inheritance.asp" target="_blank">CSS Inheritance</a></li>
-                    </ol>
-                </section>
             </aside>
         </main>
 
@@ -139,8 +128,8 @@
     <script src="../script/grade.js"></script>
     <script src="../script/bag.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
-    <script src="../script/pageTurn.js?v=9"></script>
-    <script src="../script/homeScrollTop.js?v=1"></script>
+    <script src="../script/pageTurn.js?v=13"></script>
+    <script src="../script/homeScrollTop.js?v=5"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="module" src="../script/realtimeInfo.js"></script>
 </body>

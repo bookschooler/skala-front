@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <title>회원가입</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/style.css?v=107">
+    <link rel="stylesheet" href="../css/style.css?v=120">
 </head>
 <body class="newspaper-subpage">
     <div class="container">
         <h1>SIGN UP</h1>
         <div class="subpage-masthead-meta">
             <p>SIGN UP TO JOIN SOYOUNG'S UNIVERSE</p>
-            <span class="home-current-date">2026.07.25</span>
         </div>
 
         <p>회원가입을 하시려면 아래 정보를 입력해주세요.</p>
@@ -62,6 +61,29 @@
                 <p>
                     <label for="birthday">생년월일:</label>
                     <input type="date" id="birthday" name="birthday">
+                </p>
+
+                <p>
+                    <label for="mbti">MBTI:</label>
+                    <select id="mbti" name="mbti">
+                        <option value="">-- 선택해 주세요 --</option>
+                        <option value="ISTJ">ISTJ</option>
+                        <option value="ISFJ">ISFJ</option>
+                        <option value="INFJ">INFJ</option>
+                        <option value="INTJ">INTJ</option>
+                        <option value="ISTP">ISTP</option>
+                        <option value="ISFP">ISFP</option>
+                        <option value="INFP">INFP</option>
+                        <option value="INTP">INTP</option>
+                        <option value="ESTP">ESTP</option>
+                        <option value="ESFP">ESFP</option>
+                        <option value="ENFP">ENFP</option>
+                        <option value="ENTP">ENTP</option>
+                        <option value="ESTJ">ESTJ</option>
+                        <option value="ESFJ">ESFJ</option>
+                        <option value="ENFJ">ENFJ</option>
+                        <option value="ENTJ">ENTJ</option>
+                    </select>
                 </p>
 
                 <p>
@@ -117,7 +139,7 @@
             </div>
         </form>
     </div>
-    <script src="../script/navigationUX.js?v=8"></script>
+    <script src="../script/navigationUX.js?v=12"></script>
     <script src="../script/signUp.js?v=1"></script>
 </body>
 </html>

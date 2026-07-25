@@ -66,17 +66,26 @@ body.intro-is-open {
     z-index: 1;
     width: min(940px, 90vw);
     height: min(700px, 82vh);
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
     transform: translate(-50%, -50%) !important;
 }
 
 .intro-flipbook .stf__block {
-    transform: translateX(calc(var(--intro-cover-shift, 0px) * -1));
+    transform: translateX(-25%);
 }
 
 .page-turn-intro.intro-leaving .intro-flipbook {
     opacity: 0;
+}
+
+.page-turn-intro.intro-finishing {
+    animation: introFade 260ms ease forwards;
+    pointer-events: none;
+}
+
+.page-turn-intro.intro-finishing + .newspaper {
+    animation: newspaperReveal 420ms cubic-bezier(0.22, 0.78, 0.28, 1) both;
 }
 
 .intro-page {
@@ -96,6 +105,15 @@ body.intro-is-open {
     box-shadow: 0 34px 90px rgba(37, 29, 20, 0.28);
     transform-origin: left center;
     overflow: hidden;
+}
+
+.intro-flipbook .intro-paper {
+    min-height: 0;
+    height: 100% !important;
+}
+
+.intro-flipbook .stf__item {
+    top: 0 !important;
 }
 
 .intro-static-paper {
@@ -408,7 +426,7 @@ video {
 .page-home-button,
 .scroll-top-button {
     position: fixed;
-    z-index: 15;
+    z-index: 5000;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -432,12 +450,11 @@ video {
 
 .page-home-button {
     top: 50%;
-    left: max(12px, calc((100vw - 1080px) / 4 - 21px));
     transform: translateY(-50%) translateY(var(--back-button-y, 0px));
 }
 
 .scroll-top-button {
-    right: 20px;
+    right: auto;
     bottom: 20px;
     opacity: 0;
     pointer-events: none;
@@ -500,10 +517,22 @@ video {
 }
 
 .masthead-meta-top {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
     margin-bottom: 6px;
     padding: 0 2px;
     text-align: center;
+}
+
+.masthead-meta-top > span:first-child {
+    grid-column: 2;
+    justify-self: center;
+}
+
+.masthead-meta-top .home-current-date {
+    grid-column: 3;
+    justify-self: end;
 }
 
 .masthead h1 {
@@ -591,9 +620,9 @@ body.intro-is-open .intro-replay-button {
 @media (max-width: 1260px) {
     .newspaper,
     body.newspaper-subpage .container {
-        width: calc(100% - 106px);
-        margin-left: 86px;
-        margin-right: 20px;
+        width: calc(100% - 184px);
+        margin-left: 92px;
+        margin-right: 92px;
     }
 
     .intro-replay-button,
@@ -943,6 +972,27 @@ body.newspaper-subpage .container {
         var(--sheet);
     box-shadow: var(--shadow);
     text-align: left;
+}
+
+body.holiday-page .holiday-schedule {
+    display: grid;
+    gap: 8px;
+    margin: 0 0 20px;
+}
+
+body.holiday-page .holiday-entry {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+}
+
+body.holiday-page .holiday-entry strong {
+    white-space: nowrap;
+}
+
+body.holiday-page .holiday-entry span {
+    min-width: 0;
 }
 
 body.newspaper-subpage .container::before {
@@ -1791,6 +1841,62 @@ body.profile-page h2::before {
         padding: 18px;
     }
 
+    .intro-flipbook {
+        width: calc(100vw - 130px) !important;
+        max-width: calc(100vw - 130px);
+        height: min(820px, calc(100vh - 60px)) !important;
+    }
+
+    .intro-flipbook .stf__block {
+        transform: translateX(0);
+    }
+
+    .intro-flipbook .intro-paper {
+        padding: 18px;
+    }
+
+    .intro-paper-meta {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 7px 0;
+        font-size: 0.68rem;
+    }
+
+    .intro-paper-meta > span:first-child {
+        display: none;
+    }
+
+    .intro-paper-meta .intro-tags {
+        grid-column: 1;
+        gap: 2px 10px;
+    }
+
+    .intro-current-date {
+        grid-column: 1;
+        justify-self: end;
+        padding-right: 0;
+    }
+
+    .intro-flipbook .intro-paper-title {
+        font-size: clamp(1.25rem, 7vw, 1.85rem);
+        letter-spacing: 0.02em;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .intro-flipbook .intro-paper-cover h2 {
+        font-size: 1.05rem;
+    }
+
+    .intro-flipbook .intro-paper-cover p {
+        font-size: 0.75rem;
+        line-height: 1.48;
+    }
+
+    .intro-flipbook .intro-photo-block {
+        min-height: 140px;
+    }
+
     .intro-static-paper {
         width: var(--intro-paper-width);
         max-width: calc(100vw - 36px);
@@ -1801,8 +1907,8 @@ body.profile-page h2::before {
     }
 
     .newspaper {
-        width: calc(100% - 106px);
-        margin: 9px 20px 9px 86px;
+        width: calc(100% - 184px);
+        margin: 9px 92px;
         padding: 16px;
     }
 
@@ -1853,6 +1959,18 @@ body.profile-page h2::before {
 
 }
 
+@media (min-width: 861px) {
+    .intro-flipbook {
+        height: min(700px, calc(100vh - 96px)) !important;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 860px) {
+    .intro-flipbook .stf__block {
+        transform: translateX(-25%);
+    }
+}
+
 @media (min-width: 861px) and (max-width: 1100px) {
     .intro-static-paper {
         margin-right: 72px;
@@ -1861,8 +1979,8 @@ body.profile-page h2::before {
 
 @media (max-width: 786px) {
     body.newspaper-subpage .container {
-        width: calc(100% - 106px);
-        margin: 9px 20px 9px 86px;
+        width: calc(100% - 184px);
+        margin: 9px 92px;
         padding: 16px;
     }
 
@@ -1979,6 +2097,14 @@ body.profile-page h2::before {
     }
 }
 
+@media (min-width: 787px) and (max-width: 1260px) {
+    body.newspaper-subpage .container {
+        width: calc(100% - 184px);
+        margin-left: 92px;
+        margin-right: 92px;
+    }
+}
+
 @media (max-width: 520px) {
     body.newspaper-subpage h1 {
         font-size: 1.48rem;
@@ -2014,7 +2140,22 @@ body.profile-page h2::before {
     }
 
     .masthead-meta-top {
-        justify-content: center;
+        grid-template-columns: 1fr;
+        row-gap: 2px;
+    }
+
+    .masthead-meta-top > span:first-child,
+    .masthead-meta-top .home-current-date {
+        grid-column: 1;
+    }
+
+    .masthead-meta-top > span:first-child {
+        justify-self: center;
+    }
+
+    .masthead-meta-top .home-current-date {
+        justify-self: end;
+        font-size: 0.68rem;
     }
 
     .story-tags {

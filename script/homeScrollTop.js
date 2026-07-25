@@ -12,11 +12,31 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    function positionTopButton() {
+        var frame = document.querySelector(".newspaper");
+        var buttonWidth = topButton.offsetWidth;
+        var left = window.innerWidth - buttonWidth - 16;
+
+        if (frame) {
+            var frameRect = frame.getBoundingClientRect();
+            left = frameRect.right + 18;
+        }
+
+        if (left + buttonWidth > window.innerWidth - 12) {
+            left = window.innerWidth - buttonWidth - 12;
+        }
+
+        topButton.style.left = Math.max(12, Math.round(left)) + "px";
+        topButton.style.right = "auto";
+    }
+
     function toggleTopButton() {
-        topButton.classList.toggle("is-visible", window.scrollY > 260);
+        topButton.classList.toggle("is-visible", window.scrollY > 80);
     }
 
     document.body.appendChild(topButton);
     window.addEventListener("scroll", toggleTopButton, { passive: true });
+    window.addEventListener("resize", positionTopButton);
+    positionTopButton();
     toggleTopButton();
 });

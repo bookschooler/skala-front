@@ -26,6 +26,24 @@ document.addEventListener("DOMContentLoaded", function () {
         window.sessionStorage.setItem(skipIntroKey, "return-home");
     });
 
+    function positionHomeButton() {
+        var frame = document.querySelector(".container");
+        var buttonWidth = homeButton.offsetWidth;
+        var left = 12;
+
+        if (frame) {
+            var frameRect = frame.getBoundingClientRect();
+            left = frameRect.left - buttonWidth - 18;
+        }
+
+        if (left < 12) {
+            left = 12;
+        }
+
+        homeButton.style.left = Math.round(left) + "px";
+        homeButton.style.right = "auto";
+    }
+
     var topButton = document.createElement("button");
     topButton.className = "scroll-top-button";
     topButton.type = "button";
@@ -39,8 +57,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    function positionTopButton() {
+        var frame = document.querySelector(".container");
+        var buttonWidth = topButton.offsetWidth;
+        var left = window.innerWidth - buttonWidth - 16;
+
+        if (frame) {
+            var frameRect = frame.getBoundingClientRect();
+            left = frameRect.right + 18;
+        }
+
+        if (left + buttonWidth > window.innerWidth - 12) {
+            left = window.innerWidth - buttonWidth - 12;
+        }
+
+        topButton.style.left = Math.max(12, Math.round(left)) + "px";
+        topButton.style.right = "auto";
+    }
+
     function toggleTopButton() {
-        topButton.classList.toggle("is-visible", window.scrollY > 260);
+        topButton.classList.toggle("is-visible", window.scrollY > 80);
     }
 
     var lastScrollY = window.scrollY;
@@ -92,5 +128,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.appendChild(homeButton);
     document.body.appendChild(topButton);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", positionTopButton);
+    window.addEventListener("resize", positionHomeButton);
+    positionHomeButton();
+    positionTopButton();
     toggleTopButton();
 });

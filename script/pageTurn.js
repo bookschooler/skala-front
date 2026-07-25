@@ -6,25 +6,25 @@ document.addEventListener("DOMContentLoaded", function () {
     var pages = document.querySelectorAll(".intro-page");
     var skipIntroKey = "soyoungSkipIntro";
     var pageFlip;
-    var staticPaper;
+    var pageFlipReady = false;
+    var finishTimer;
     var resizeTimer;
     var replayLastScrollY = window.scrollY;
     var replayCurrentOffset = 0;
     var replayAnimationFrame = null;
 
     function positionIntroButton() {
-        if (!staticPaper || intro.classList.contains("intro-hidden")) {
+        if (intro.classList.contains("intro-hidden")) {
             return;
         }
 
-        var paperRect = staticPaper.getBoundingClientRect();
+        var visiblePage = bookElement.querySelector(".stf__item.--right, .stf__item.--left");
+        var paperRect = visiblePage ? visiblePage.getBoundingClientRect() : bookElement.getBoundingClientRect();
         var buttonWidth = button.offsetWidth;
         var buttonHeight = button.offsetHeight;
-        var rightMarginWidth = window.innerWidth - paperRect.right;
-        var left = paperRect.right + ((rightMarginWidth - buttonWidth) / 2);
+        var left = paperRect.right + 28;
         var top = paperRect.top + (paperRect.height / 2);
 
-        left = Math.max(paperRect.right + 12, left);
         left = Math.min(window.innerWidth - buttonWidth - 16, left);
 
         button.style.left = Math.round(left) + "px";
@@ -95,26 +95,20 @@ document.addEventListener("DOMContentLoaded", function () {
         window.sessionStorage.removeItem(skipIntroKey);
     }
 
-    if (pages.length > 0) {
-        staticPaper = pages[0].cloneNode(true);
-        staticPaper.classList.remove("intro-page");
-        staticPaper.classList.add("intro-static-paper");
-        staticPaper.removeAttribute("data-density");
-        staticPaper.removeAttribute("style");
-        bookElement.before(staticPaper);
-        positionIntroButton();
-        window.setTimeout(positionIntroButton, 80);
-    }
-
     if (window.St && typeof window.St.PageFlip === "function") {
+        var compactViewport = window.innerWidth <= 860;
+        var introHeight = compactViewport
+            ? Math.min(820, Math.max(520, window.innerHeight - 60))
+            : Math.min(700, Math.max(520, window.innerHeight - 96));
+
         pageFlip = new window.St.PageFlip(bookElement, {
             width: 940,
-            height: 700,
+            height: introHeight,
             size: "stretch",
-            minWidth: 310,
+            minWidth: 260,
             maxWidth: 940,
-            minHeight: 520,
-            maxHeight: 700,
+            minHeight: compactViewport ? 520 : 520,
+            maxHeight: introHeight,
             drawShadow: true,
             flippingTime: 1150,
             usePortrait: true,
@@ -126,37 +120,48 @@ document.addEventListener("DOMContentLoaded", function () {
             swipeDistance: 30,
             clickEventForward: true,
             useMouseEvents: true,
-            disableFlipByClick: true
+            disableFlipByClick: false
         });
 
         pageFlip.loadFromHTML(pages);
-
-        window.setTimeout(function () {
-            var visiblePage = bookElement.querySelector(".stf__item.--right");
-
-            if (!visiblePage) {
-                return;
-            }
-
-            bookElement.style.setProperty("--intro-cover-shift", (visiblePage.offsetLeft / 2) + "px");
-        }, 80);
+        pageFlipReady = true;
+        pageFlip.on("flip", finishIntro);
     } else {
         intro.classList.add("intro-fallback");
     }
 
-    button.addEventListener("click", function () {
-        if (intro.classList.contains("intro-leaving")) {
+    positionIntroButton();
+    window.setTimeout(positionIntroButton, 120);
+
+    function finishIntro() {
+        if (intro.classList.contains("intro-finishing")) {
             return;
         }
 
-        intro.classList.add("intro-leaving");
-        button.disabled = true;
+        window.clearTimeout(finishTimer);
+        intro.classList.add("intro-finishing");
+        intro.setAttribute("aria-hidden", "true");
 
         window.setTimeout(function () {
             intro.classList.add("intro-hidden");
-            intro.setAttribute("aria-hidden", "true");
             document.body.classList.remove("intro-is-open");
-        }, 1450);
+        }, 300);
+    }
+
+    button.addEventListener("click", function () {
+        if (intro.classList.contains("intro-finishing")) {
+            return;
+        }
+
+        button.disabled = true;
+
+        if (pageFlipReady) {
+            pageFlip.flipNext("top");
+            finishTimer = window.setTimeout(finishIntro, 1350);
+            return;
+        }
+
+        finishIntro();
     });
 
     window.addEventListener("resize", function () {
