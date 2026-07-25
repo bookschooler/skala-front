@@ -1435,8 +1435,9 @@ body.trip-page .trip-video-section video {
     margin: 8px auto 14px;
 }
 
-body.trip-page .trip-video-section p {
-    margin: 0;
+body.trip-page .trip-video-section .trip-video-caption {
+    width: min(680px, 100%);
+    margin: 0 auto;
     text-align: center;
 }
 
