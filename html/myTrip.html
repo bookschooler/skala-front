@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>나의 여행 앨범</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=107">
+</head>
+<body class="newspaper-subpage trip-page">
+    <div class="container">
+        <h1>MY TRAVEL LOG</h1>
+        <div class="subpage-masthead-meta">
+            <p>WHERE I TRAVELLED THIS 3 YEARS</p>
+            <span class="home-current-date">2026.07.25</span>
+        </div>
+
+        <div class="trip-audio-player">
+            <audio id="trip-audio" preload="metadata" autoplay>
+                <source src="../media/10CM _ Gradation(그라데이션).mp3" type="audio/mpeg">
+                브라우저가 오디오 태그를 지원하지 않습니다.
+            </audio>
+            <div class="trip-audio-controls" aria-label="10CM - Gradation 오디오 플레이어">
+                <button id="trip-audio-play" class="trip-audio-play" type="button" aria-label="재생">▶</button>
+                <span class="trip-audio-title">
+                    <span class="trip-audio-artist">10CM</span>
+                    <span class="trip-audio-track-title">Gradation</span>
+                </span>
+                <div id="trip-audio-progress" class="trip-audio-progress" role="slider" tabindex="0" aria-label="재생 위치" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></div>
+                <button id="trip-audio-volume" class="trip-audio-volume" type="button" aria-label="음소거">🔊</button>
+                <input id="trip-audio-volume-range" class="trip-audio-volume-range" type="range" min="0" max="1" step="0.01" value="0.1" aria-label="음량 조절">
+            </div>
+            <div id="trip-audio-status" class="trip-audio-status" aria-live="polite">0:00 / 3:37</div>
+        </div>
+
+        <hr>
+
+        <section class="trip-year-section">
+            <h2>'26 제주</h2>
+            <div class="trip-grid">
+                <div class="trip-card">
+                    <img src="../media/사려니숲.jpg" alt="사려니숲">
+                    <p>사려니숲<br><span>녹음이 우거진 숲길을 하염없이 걸어도 좋았던</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/성산일출봉.jpg" alt="성산일출봉">
+                    <p>성산일출봉<br><span>숙소에서 성산일출봉까지 러닝✅</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/아쿠아플라넷제주.jpg" alt="아쿠아플라넷제주">
+                    <p>아쿠아플라넷 제주<br><span>다음엔 수족관멍 반나절은 해야겠음</span></p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="trip-year-section">
+            <h2>'25 중국 청두</h2>
+            <div class="trip-grid">
+                <div class="trip-card">
+                    <img src="../media/구채구.jpg" alt="구채구">
+                    <p>구채구<br><span>아름다운 물 + 중국사람들 실컷 구경한</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/낙산대불.jpg" alt="낙산대불">
+                    <p>낙산대불<br><span>부처님 잘되게 해주세요🙏🏻</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/판다.jpg" alt="판다">
+                    <p>판다기지<br><span>판다보다 렛서판다가 더 귀여웠던</span></p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="trip-year-section">
+            <h2>'24 중국 윈난</h2>
+            <div class="trip-grid">
+                <div class="trip-card">
+                    <img src="../media/샹그리라.jpg" alt="샹그리라">
+                    <p>샹그리라<br><span>소수민족의 애환이 느껴졌던 곳</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/차마고도.jpg" alt="차마고도">
+                    <p>옥룡설산<br><span>거대한 자연앞에서 저절로 겸손해지던</span></p>
+                </div>
+
+                <div class="trip-card">
+                    <img src="../media/호도협.jpg" alt="호도협">
+                    <p>호도협<br><span>천국의 계단 타다가 천국가는 줄...</span></p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="trip-video-section">
+            <h2>📹 My Travel Log</h2>
+            <video controls width="420">
+                <source src="../media/수족관멍.mp4" type="video/mp4">
+                브라우저가 비디오 태그를 지원하지 않습니다.
+            </video>
+            <p>아쿠아플라넷 제주에서 1시간 동안 수족관멍하며 찍은 영상 🐠</p>
+        </section>
+    </div>
+    <script src="../script/navigationUX.js?v=8"></script>
+    <script src="../script/tripAudio.js?v=6"></script>
+    <script src="../script/imageHoverPreview.js?v=1"></script>
+</body>
+</html>

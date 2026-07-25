@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=107">
+</head>
+<body class="newspaper-subpage">
+    <div class="container">
+        <h1>SIGN UP</h1>
+        <div class="subpage-masthead-meta">
+            <p>SIGN UP TO JOIN SOYOUNG'S UNIVERSE</p>
+            <span class="home-current-date">2026.07.25</span>
+        </div>
+
+        <p>회원가입을 하시려면 아래 정보를 입력해주세요.</p>
+        <hr>
+
+        <form action="signUpResult.html" method="get">
+            <fieldset>
+                <legend>계정 정보</legend>
+
+                <p>
+                    <label for="user-id">아이디:</label>
+                    <input type="text" id="user-id" name="userId" placeholder="4~15자 영문/숫자" minlength="4" maxlength="15" required>
+                    <strong>(필수)</strong>
+                </p>
+
+                <p>
+                    <label for="password">비밀번호:</label>
+                    <input type="password" id="password" name="password" placeholder="8자 이상 입력" minlength="8" required>
+                    <strong>(필수)</strong>
+                </p>
+
+                <p>
+                    <label for="email-id">이메일:</label>
+                    <input type="text" id="email-id" name="emailId" placeholder="example" required>
+                    <span class="email-at" aria-hidden="true">@</span>
+                    <span class="email-domain-control">
+                        <select name="emailDomain" id="email-domain">
+                            <option value="">직접 입력</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="daum.net">daum.net</option>
+                        </select>
+                        <input type="text" id="email-domain-custom" name="emailDomainCustom" placeholder="domain.com" aria-label="이메일 도메인 직접 입력" hidden>
+                    </span>
+                </p>
+            </fieldset>
+
+            <br>
+
+            <fieldset>
+                <legend>개인 프로필 정보</legend>
+
+                <p>
+                    <label for="name">이름:</label>
+                    <input type="text" id="name" name="name">
+                </p>
+
+                <p>
+                    <label for="birthday">생년월일:</label>
+                    <input type="date" id="birthday" name="birthday">
+                </p>
+
+                <p>
+                    성별:
+                    <input type="radio" id="male" name="gender" value="남성" checked>
+                    <label for="male">남성</label>
+                    <input type="radio" id="female" name="gender" value="여성">
+                    <label for="female">여성</label>
+                    <input type="radio" id="none" name="gender" value="선택안함">
+                    <label for="none">선택안함</label>
+                </p>
+
+                <p>
+                    관심 분야 (중복 선택 가능):<br>
+                    <input type="checkbox" id="frontend" name="interest" value="웹 프론트엔드">
+                    <label for="frontend">웹 프론트엔드 (Vue.js/HTML)</label><br>
+                    <input type="checkbox" id="uiux" name="interest" value="UI/UX 디자인 표준">
+                    <label for="uiux">UI/UX 디자인 표준</label><br>
+                    <input type="checkbox" id="backend" name="interest" value="백엔드 & 데이터베이스">
+                    <label for="backend">백엔드 & 데이터베이스</label><br>
+                    <input type="checkbox" id="cloud" name="interest" value="클라우드 & 인프라">
+                    <label for="cloud">클라우드 & 인프라</label>
+                </p>
+
+                <p>
+                    <label for="route">가입 경로:</label>
+                    <select name="route" id="route">
+                        <option value="">-- 선택해 주세요 --</option>
+                        <option value="검색">검색</option>
+                        <option value="지인 추천">지인 추천</option>
+                        <option value="SNS">SNS</option>
+                        <option value="강의">강의</option>
+                    </select>
+                </p>
+            </fieldset>
+
+            <br>
+
+            <fieldset>
+                <legend>자기소개</legend>
+
+                <p>
+                    <label for="intro">나를 표현하는 한 줄 소개 또는 가입 인사:</label><br>
+                    <textarea id="intro" name="intro" rows="5" cols="55" maxlength="200" placeholder="여기에 내용을 입력하세요 (최대 200자)"></textarea>
+                </p>
+            </fieldset>
+
+            <br>
+
+            <div class="sign-up-actions">
+                <input type="submit" value="회원가입">
+                <input type="reset" value="다시 작성">
+            </div>
+        </form>
+    </div>
+    <script src="../script/navigationUX.js?v=8"></script>
+    <script src="../script/signUp.js?v=1"></script>
+</body>
+</html>

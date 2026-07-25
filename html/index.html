@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YUN SOYOUNG</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="../css/style.css?v=107">
+</head>
+<body class="intro-is-open">
+    <div class="page-turn-intro" aria-label="인트로 신문">
+        <div class="intro-flipbook" id="intro-flipbook">
+            <div class="intro-page intro-paper" data-density="hard">
+                <div class="intro-paper-label">WELCOME TO SOYOUNG'S WEB PAGE</div>
+                <div class="intro-title-rule" aria-hidden="true"></div>
+                <div class="intro-paper-title">YUN SOYOUNG</div>
+                <div class="intro-paper-meta">
+                    <span></span>
+                    <span class="intro-tags">
+                        <span>#BOOKSCHOOLER</span>
+                        <span>#DREAMER</span>
+                        <span>#POLYMATH</span>
+                        <span>#MULTI-LINGUAL</span>
+                    </span>
+                    <span class="intro-current-date">2026.07.25</span>
+                </div>
+                <div class="intro-paper-cover">
+                    <div class="intro-text-block">
+                        <h2>SOMETHING ABOUT ME</h2>
+                        <p>안녕하세요. 책과 여행 그리고 차(茶)를 좋아하는 윤소영입니다.<br><br>
+                            FRONT-END가 처음이지만 AI와 함께 열심히 만들고 역엔지니어링 하는 방식으로 HTML, CSS, JavaScript를 공부하고 있습니다.<br>
+                            <br>어떤 디자인을 적용하면 좋을까 하다가 평소 활자 읽는 것을 좋아하니깐 신문 스타일이면 재밌겠다고 생각해서 해당 디자인을 적용해봤습니다.</p>
+                    </div>
+                    <div class="intro-photo-block">
+                        <img src="../media/아쿠아플라넷제주.jpg" alt="아쿠아플라넷제주">
+                    </div>
+                </div>
+            </div>
+            <div class="intro-page intro-paper intro-paper-back" data-density="hard" aria-hidden="true">
+            </div>
+        </div>
+        <button class="intro-next-button" type="button" aria-label="홈페이지로 넘기기">
+            <span aria-hidden="true">▶</span>
+        </button>
+    </div>
+
+    <div class="newspaper">
+        <div class="masthead-meta masthead-meta-top">
+            <span>SKALA FRONT-END CLASS</span>
+        </div>
+
+        <header class="masthead">
+            <h1><span>YUN SOYOUNG</span></h1>
+            <div class="masthead-bottom-meta">
+                <p>SOYOUNG'S PERSONAL WEB PAGE FOR FRONT-END CLASS</p>
+                <span class="home-current-date">2026.07.25</span>
+            </div>
+        </header>
+
+        <nav class="edition-nav" aria-label="바로가기 메뉴">
+            <a href="myProfile.html">Profile</a>
+            <a href="myClass.html">Class</a>
+            <a href="myHoliday.html">Holiday</a>
+            <a href="myTrip.html">Album</a>
+            <a href="signUp.html">Sign Up</a>
+        </nav>
+
+        <main class="content-grid">
+            <article class="paper-section news-desk">
+                <p class="kicker">WHAT'S NEW</p>
+                <h2>Travel Album Update</h2>
+                <br><h3>Today's Major News</h3>
+                <p><strong>[업데이트]</strong> 드디어 프론트 엔드 과제 완성! 여행 앨범에 동영상 추가 완료.</p>
+                <p>아쿠아플라넷에서의 수족관멍 영상을 추가했습니다. 
+                <br>제가 한 시간이나 수족관멍을 하게 한 영상입니다.</p>
+                <p class="byline">26.07.25</p>
+
+                <h3>Best Cut of the Month</h3>
+                <video src="../media/수족관멍.mp4" controls></video>
+                <br><p>아쿠아플라넷에서 수족관멍. 2026년 촬영.</p>
+
+            </article>
+
+            <aside class="sidebar-stack" aria-label="사이드바">
+                <section class="paper-section info-brief">
+                    <p class="kicker">Live Information</p>
+                    <h2>Real-Time Info</h2>
+                    <p>현재 위치: 경기도 성남시 분당구</p>
+                    <p>추천 학습 사이트: <a href="https://www.w3schools.com/" target="_blank">W3Schools</a></p>
+                </section>
+
+                <section class="paper-section weather-edition">
+                    <div class="section-heading">
+                        <p class="kicker">World Weather</p>
+                        <h2>Real-Time World Weather</h2>
+                        <p>도시를 고르거나 지도 핀을 클릭하면 현재 기온과 습도를 확인할 수 있습니다. 기본 도시는 서울입니다.</p>
+                    </div>
+                    <select id="city-select" aria-label="도시 선택"></select>
+                    <div class="weather-map-layout">
+                        <div id="weather-box"></div>
+                        <div id="leaflet-map" class="world-map" aria-label="세계 도시 날씨 지도"></div>
+                    </div>
+                </section>
+
+                <section class="paper-section action-panel">
+                    <p class="kicker">JavaScript Practice</p>
+                    <h2>JavaScript Heaven</h2>
+                    <button type="button" onclick="startUpDownGame()">Up-Down Game</button>
+                    <button type="button" onclick="calculateGrade()">Grade Calculator</button>
+                    <button type="button" onclick="showMyBag()">My Bag</button>
+                </section>
+
+                <section class="paper-section challenge-card">
+                    <p class="kicker">CSS Learning Links</p>
+                    <h2>CSS Code Challenge</h2>
+                    <ol class="challenge-list">
+                        <li><a href="https://www.w3schools.com/css/css_challenges_colors.asp" target="_blank">CSS Colors</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_challenges_font.asp" target="_blank">CSS Fonts</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_challenges_text.asp" target="_blank">CSS Text</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_challenges_background.asp" target="_blank">CSS Backgrounds</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_challenges_position.asp" target="_blank">CSS Position</a></li>
+                        <li><a href="https://www.w3schools.com/css/css_challenges_inheritance.asp" target="_blank">CSS Inheritance</a></li>
+                    </ol>
+                </section>
+            </aside>
+        </main>
+
+        <footer class="paper-footer">
+            <p>문의: yunsoyoung1107@gmail.com</p>
+            <p>© 2026 YUN SOYOUNG. 모든 태그는 웹 표준 시맨틱 태그로 작성되었습니다.</p>
+        </footer>
+    </div>
+
+    <button class="intro-replay-button" type="button" aria-label="인트로로 돌아가기">
+        <span aria-hidden="true">◀</span>
+    </button>
+
+    <script src="../script/upDown.js"></script>
+    <script src="../script/grade.js"></script>
+    <script src="../script/bag.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+    <script src="../script/pageTurn.js?v=9"></script>
+    <script src="../script/homeScrollTop.js?v=1"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../script/realtimeInfo.js"></script>
+</body>
+</html>
