@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUN SOYOUNG</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="../css/style.css?v=121">
+    <link rel="stylesheet" href="../css/style.css?v=122">
 </head>
 <body class="intro-is-open">
     <div class="page-turn-intro" aria-label="인트로 신문">
@@ -86,7 +86,8 @@
                 <section class="paper-section info-brief">
                     <p class="kicker">Live Information</p>
                     <h2>Real-Time Info</h2>
-                    <p>현재 위치: 경기도 성남시 분당구</p>
+                    <p id="current-location-status">현재 위치 권한을 확인하는 중입니다.</p>
+                    <p id="current-location-detail" class="current-location-detail">위치 권한을 허용하면 한글 주소와 현재 위치 날씨가 표시됩니다.</p>
                     <p>추천 학습 사이트: <a href="https://www.w3schools.com/" target="_blank">W3Schools</a></p>
                 </section>
 
@@ -131,6 +132,6 @@
     <script src="../script/pageTurn.js?v=13"></script>
     <script src="../script/homeScrollTop.js?v=5"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script type="module" src="../script/realtimeInfo.js"></script>
+    <script type="module" src="../script/realtimeInfo.js?v=2"></script>
 </body>
 </html>

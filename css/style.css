@@ -877,6 +877,12 @@ h3 {
     background: var(--green);
 }
 
+.current-location-marker {
+    width: 30px;
+    height: 30px;
+    background: #b92424;
+}
+
 .city-weather-marker::after {
     content: "";
     width: 8px;
@@ -901,6 +907,11 @@ h3 {
 .weather-coordinates {
     color: var(--muted);
     font-size: 0.9rem;
+}
+
+.current-location-detail {
+    color: var(--muted);
+    font-size: 0.92rem;
 }
 
 .weather-meta {

@@ -1,4 +1,4 @@
-import { getRealtimeWeather } from "./weatherAPI.js";
+import { getKoreanAddress, getRealtimeWeather } from "./weatherAPI.js";
 
 var cities = [
     { name: "광주광역시 광산구 KR", country: "대한민국", latitude: 35.1595, longitude: 126.8526 },
@@ -53,13 +53,73 @@ var cities = [
 ];
 
 var selectedCityName = "서울 KR";
+var currentLocationName = "내 현재 위치";
+var currentLocation = null;
+var currentLocationKey = "";
+var hasAutoSelectedCurrentLocation = false;
 var weatherMap;
 var markersByCity = {};
+var currentLocationMarker = null;
 
 function findCity(cityName) {
     return cities.find(function (city) {
         return city.name === cityName;
     });
+}
+
+function getSelectedLocation() {
+    if (selectedCityName === currentLocationName && currentLocation) {
+        return currentLocation;
+    }
+
+    return findCity(selectedCityName);
+}
+
+function formatUpdatedTime(date) {
+    return date.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+}
+
+function setCurrentLocationStatus(message, detail) {
+    var statusElement = document.getElementById("current-location-status");
+    var detailElement = document.getElementById("current-location-detail");
+
+    if (statusElement) {
+        statusElement.textContent = message;
+    }
+
+    if (detailElement) {
+        detailElement.textContent = detail;
+    }
+}
+
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#039;"
+        }[character];
+    });
+}
+
+function getCurrentLocationAddressText(city) {
+    if (city.name === currentLocationName) {
+        return city.addressName || "한글 주소 확인 중";
+    }
+
+    return "위도: " + city.latitude.toFixed(4) + " · 경도: " + city.longitude.toFixed(4);
+}
+
+function getLocationDetailHtml(city) {
+    var updatedText = city.updatedAt ? "<br>업데이트: " + formatUpdatedTime(city.updatedAt) : "";
+
+    return "📍 " + escapeHtml(getCurrentLocationAddressText(city)) + updatedText;
 }
 
 function createCityIcon(isActive) {
@@ -72,13 +132,23 @@ function createCityIcon(isActive) {
     });
 }
 
+function createCurrentLocationIcon(isActive) {
+    return L.divIcon({
+        className: "",
+        html: "<span class=\"city-weather-marker current-location-marker"
+            + (isActive ? " active" : "") + "\"></span>",
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -30]
+    });
+}
+
 function renderLocation(city, weather) {
     var weatherBox = document.getElementById("weather-box");
 
     weatherBox.innerHTML = ""
         + "<h3>🌎 " + city.name + " 실시간 날씨</h3>"
-        + "<p class=\"weather-coordinates\">📍 위도: " + city.latitude.toFixed(4)
-        + " &nbsp;&nbsp; 경도: " + city.longitude.toFixed(4) + "</p>"
+        + "<p class=\"weather-coordinates\">" + getLocationDetailHtml(city) + "</p>"
         + "<div class=\"weather-meta\">"
         + "<p>🌡️ 현재 기온<br><strong>" + weather.temperature + "°C</strong></p>"
         + "<p>💧 현재 습도<br><strong>" + weather.humidity + "%</strong></p>"
@@ -88,10 +158,14 @@ function renderLocation(city, weather) {
 function renderLoading(city) {
     var weatherBox = document.getElementById("weather-box");
 
+    if (!city) {
+        weatherBox.innerHTML = "<p>현재 위치를 확인하는 중입니다. 브라우저 위치 권한을 허용해 주세요.</p>";
+        return;
+    }
+
     weatherBox.innerHTML = ""
         + "<h3>🌎 " + city.name + " 정보</h3>"
-        + "<p class=\"weather-coordinates\">📍 위도: " + city.latitude.toFixed(4)
-        + " &nbsp;&nbsp; 경도: " + city.longitude.toFixed(4) + "</p>"
+        + "<p class=\"weather-coordinates\">" + getLocationDetailHtml(city) + "</p>"
         + "<p>실시간 날씨 로딩 중... ⏳</p>";
 }
 
@@ -103,8 +177,11 @@ function renderError() {
 
 function renderCityOptions() {
     var citySelect = document.getElementById("city-select");
+    var currentLocationOption = currentLocation
+        ? "<option value=\"" + currentLocationName + "\">" + currentLocationName + "</option>"
+        : "";
 
-    citySelect.innerHTML = cities.map(function (city) {
+    citySelect.innerHTML = currentLocationOption + cities.map(function (city) {
         return "<option value=\"" + city.name + "\">" + city.name + "</option>";
     }).join("");
 
@@ -144,6 +221,10 @@ function initializeMap() {
 
         markersByCity[city.name] = marker;
     });
+
+    if (currentLocation) {
+        upsertCurrentLocationMarker();
+    }
 }
 
 function renderMapPins() {
@@ -155,21 +236,33 @@ function renderMapPins() {
         markersByCity[city.name].setIcon(createCityIcon(city.name === selectedCityName));
     });
 
-    var selectedCity = findCity(selectedCityName);
-    var selectedMarker = markersByCity[selectedCityName];
+    if (currentLocationMarker) {
+        currentLocationMarker.setIcon(createCurrentLocationIcon(selectedCityName === currentLocationName));
+    }
+
+    var selectedCity = getSelectedLocation();
+    var selectedMarker = selectedCityName === currentLocationName ? currentLocationMarker : markersByCity[selectedCityName];
+
+    if (!selectedCity || !selectedMarker) {
+        return;
+    }
 
     selectedMarker.openPopup();
-    weatherMap.flyTo([selectedCity.latitude, selectedCity.longitude], 4, {
+    weatherMap.flyTo([selectedCity.latitude, selectedCity.longitude], selectedCityName === currentLocationName ? 10 : 4, {
         animate: true,
         duration: 0.7
     });
 }
 
 async function updateWeather() {
-    var city = findCity(selectedCityName);
+    var city = getSelectedLocation();
 
     renderMapPins();
     renderLoading(city);
+
+    if (!city) {
+        return;
+    }
 
     try {
         var weather = await getRealtimeWeather(city.latitude, city.longitude);
@@ -183,6 +276,122 @@ function updateSelectedCity(cityName) {
     selectedCityName = cityName;
     document.getElementById("city-select").value = selectedCityName;
     updateWeather();
+}
+
+function upsertCurrentLocationMarker() {
+    if (!weatherMap || !currentLocation) {
+        return;
+    }
+
+    if (!currentLocationMarker) {
+        currentLocationMarker = L.marker([currentLocation.latitude, currentLocation.longitude], {
+            icon: createCurrentLocationIcon(selectedCityName === currentLocationName),
+            title: currentLocationName
+        }).addTo(weatherMap);
+
+        currentLocationMarker.bindPopup("<strong>" + currentLocationName + "</strong>");
+
+        currentLocationMarker.on("click", function () {
+            updateSelectedCity(currentLocationName);
+        });
+    } else {
+        currentLocationMarker.setLatLng([currentLocation.latitude, currentLocation.longitude]);
+        currentLocationMarker.setIcon(createCurrentLocationIcon(selectedCityName === currentLocationName));
+    }
+}
+
+async function handleLocationSuccess(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    var accuracy = position.coords.accuracy;
+    var nextLocationKey = latitude.toFixed(4) + "," + longitude.toFixed(4);
+    var hasLocationChanged = nextLocationKey !== currentLocationKey;
+    var citySelect = document.getElementById("city-select");
+    var shouldSelectCurrentLocation = !hasAutoSelectedCurrentLocation || selectedCityName === currentLocationName;
+    var addressName = currentLocation && !hasLocationChanged
+        ? currentLocation.addressName
+        : "";
+
+    currentLocationKey = nextLocationKey;
+
+    if (!addressName) {
+        setCurrentLocationStatus(
+            "현재 위치 주소를 한글로 확인하는 중입니다.",
+            "시/도, 시, 구, 동 정보만 표시합니다."
+        );
+
+        try {
+            addressName = await getKoreanAddress(latitude, longitude);
+        } catch (error) {
+            addressName = "한글 주소를 불러오지 못했습니다.";
+        }
+    }
+
+    currentLocation = {
+        name: currentLocationName,
+        country: "현재 위치",
+        latitude: latitude,
+        longitude: longitude,
+        accuracy: accuracy,
+        addressName: addressName,
+        updatedAt: new Date(position.timestamp)
+    };
+
+    setCurrentLocationStatus(
+        "현재 위치: " + addressName,
+        "업데이트 " + formatUpdatedTime(currentLocation.updatedAt)
+    );
+
+    renderCityOptions();
+    upsertCurrentLocationMarker();
+
+    if (shouldSelectCurrentLocation) {
+        selectedCityName = currentLocationName;
+        hasAutoSelectedCurrentLocation = true;
+    }
+
+    citySelect.value = selectedCityName;
+
+    if (selectedCityName === currentLocationName && (hasLocationChanged || shouldSelectCurrentLocation)) {
+        updateWeather();
+    } else {
+        renderMapPins();
+    }
+}
+
+function handleLocationError(error) {
+    var message = "현재 위치를 불러오지 못했습니다.";
+
+    if (error.code === error.PERMISSION_DENIED) {
+        message = "위치 권한이 거부되어 기본 도시 날씨를 표시합니다.";
+    } else if (error.code === error.POSITION_UNAVAILABLE) {
+        message = "현재 위치 정보를 사용할 수 없어 기본 도시 날씨를 표시합니다.";
+    } else if (error.code === error.TIMEOUT) {
+        message = "현재 위치 조회 시간이 초과되어 기본 도시 날씨를 표시합니다.";
+    }
+
+    setCurrentLocationStatus(message, "브라우저 주소창의 위치 권한을 허용하면 내 현재 위치로 다시 조회할 수 있습니다.");
+}
+
+function startCurrentLocationTracking() {
+    if (!("geolocation" in navigator)) {
+        setCurrentLocationStatus(
+            "이 브라우저에서는 현재 위치 조회를 지원하지 않습니다.",
+            "기본 도시 날씨를 표시합니다."
+        );
+        return;
+    }
+
+    setCurrentLocationStatus(
+        "현재 위치 권한을 요청하는 중입니다.",
+        "브라우저가 위치 권한을 물어보면 허용을 선택해 주세요."
+    );
+
+    navigator.geolocation.watchPosition(handleLocationSuccess, handleLocationError, {
+        enableHighAccuracy: true,
+        maximumAge: 30000,
+        timeout: 10000
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -200,4 +409,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateWeather();
+    startCurrentLocationTracking();
 });
