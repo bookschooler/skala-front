@@ -22,10 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
         var paperRect = visiblePage ? visiblePage.getBoundingClientRect() : bookElement.getBoundingClientRect();
         var buttonWidth = button.offsetWidth;
         var buttonHeight = button.offsetHeight;
-        var left = paperRect.right + 28;
+        var compactViewport = window.innerWidth <= 860;
+        var left = compactViewport ? paperRect.right - (buttonWidth / 2) : paperRect.right + 28;
         var top = paperRect.top + (paperRect.height / 2);
 
-        left = Math.min(window.innerWidth - buttonWidth - 16, left);
+        left = Math.min(window.innerWidth - buttonWidth, left);
+        top = Math.min(window.innerHeight - buttonHeight - 16, top);
 
         button.style.left = Math.round(left) + "px";
         button.style.top = Math.round(top) + "px";
@@ -35,6 +37,21 @@ document.addEventListener("DOMContentLoaded", function () {
     function dispatchIntroClosed() {
         window.soyoungIntroClosed = true;
         window.dispatchEvent(new CustomEvent("soyoung:intro-closed"));
+    }
+
+    function focusHomeTop() {
+        var homeFrame = document.querySelector(".newspaper");
+
+        intro.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
+
+        if (homeFrame) {
+            homeFrame.setAttribute("tabindex", "-1");
+            homeFrame.focus({ preventScroll: true });
+            window.scrollTo(0, 0);
+        }
     }
 
     if (!intro || !button || !bookElement) {
@@ -103,9 +120,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (window.St && typeof window.St.PageFlip === "function") {
         var compactViewport = window.innerWidth <= 860;
-        var introHeight = compactViewport
-            ? Math.min(820, Math.max(520, window.innerHeight - 60))
-            : Math.min(700, Math.max(520, window.innerHeight - 96));
+        var narrowViewport = window.innerWidth <= 1260;
+        var introHeight = Math.min(700, Math.max(520, window.innerHeight - 64));
+
+        if (compactViewport) {
+            var compactTopGap = window.innerHeight <= 700 ? 10 : 16;
+
+            introHeight = window.innerWidth <= 360
+                ? Math.max(700, window.innerHeight - compactTopGap)
+                : Math.max(720, window.innerHeight - compactTopGap);
+        } else if (narrowViewport) {
+            introHeight = Math.min(700, Math.max(560, window.innerHeight - 32));
+        }
 
         pageFlip = new window.St.PageFlip(bookElement, {
             width: 940,
@@ -113,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
             size: "stretch",
             minWidth: 260,
             maxWidth: 940,
-            minHeight: compactViewport ? 520 : 520,
+            minHeight: compactViewport ? 420 : 520,
             maxHeight: introHeight,
             drawShadow: true,
             flippingTime: 1150,
@@ -151,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.setTimeout(function () {
             intro.classList.add("intro-hidden");
             document.body.classList.remove("intro-is-open");
+            focusHomeTop();
             dispatchIntroClosed();
         }, 300);
     }

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (frame) {
             var frameRect = frame.getBoundingClientRect();
-            left = frameRect.right + 18;
+            left = window.innerWidth <= 786 ? frameRect.right - buttonWidth - 12 : frameRect.right + 18;
         }
 
         if (left + buttonWidth > window.innerWidth - 12) {
